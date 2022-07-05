@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from './pages/HomePage'
+import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
+
 
 let homepage: HomePage;
+let loginpage: LoginPage;
 
 test.beforeEach(async ({page}) => {
     homepage = new HomePage(page);
@@ -14,9 +17,9 @@ test('should load CloudApp homepage', async ({page}) => {
 
 test('should create a new CloudApp account', async ({page}) => {
     await homepage.loginLnk.click();
-    await expect(page.locator('text=Welcome back')).toBeVisible();
-    const signUpLnk = page.locator('text=Sign up for free');
-    await signUpLnk.click();
+    loginpage = new LoginPage(page);
+    loginpage.verifyWelcomeMsg();
+    await loginpage.signUpLnk.click();
     await page.waitForURL('**\/signup'); 
     await expect(page.locator('text=Get started')).toBeVisible();
     const emailInput = page.locator('#email');
