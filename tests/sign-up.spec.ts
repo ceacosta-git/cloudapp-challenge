@@ -1,15 +1,13 @@
 import { test } from './fixtures/BaseTest';
 import { expect } from '@playwright/test';
 
-test.beforeEach(async ({ homePage }) => {
-    await homePage.goto();
-});
-
 test('should load CloudApp homepage', async ({ homePage }) => {
+    await homePage.goto();
     await homePage.verifyPageTitle();
 });
 
 test('should create a new CloudApp account', async ({ homePage, loginPage, signupPage, onboardingPage}) => {
+    await homePage.goto();
     await homePage.loginLnk.click();
 
     loginPage.verifyWelcomeMsg();
