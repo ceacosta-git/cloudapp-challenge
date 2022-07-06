@@ -1,4 +1,5 @@
 import { test } from './fixtures/BaseTest';
+import { expect } from '@playwright/test';
 
 test.beforeEach(async ({ homePage }) => {
     await homePage.goto();
@@ -25,4 +26,48 @@ test('should create a new CloudApp account', async ({ homePage, loginPage, signu
     
     await onboardingPage.waitForUrlChange();
     await onboardingPage.verifyDownloadBtns();
+});
+
+test('should error when signing up with existing CloudApp account', async ({ signupPage } ) => {
+    await signupPage.goto();
+    await signupPage.signUp('xatiw91450@weepm.com', 'cloudAppTestPwd01');
+    await expect(signupPage.errorMsg).toHaveText('Validation failed: Email has already been taken');
+});
+
+test('should error when signing up with invalid email format', async ({ signupPage } ) => {
+    await signupPage.goto();
+    await signupPage.signUp('notanemail', 'cloudAppTestPwd01');
+    await expect(signupPage.emailInput, 'Email format validation is expected to be handled by default\'s <input type=email/> element').toHaveAttribute('type', 'email');
+});
+
+test('should error when signing up with a password less than 8 characters', async ({ signupPage } ) => {
+    await signupPage.goto();
+    const email = `cloudAppTestEmail${(new Date()).getMilliseconds()}@weepm.com`;
+    const shortPwd = 'lU34567'
+    await signupPage.signUp(email, shortPwd);
+    await expect(signupPage.errorMsg).toHaveText('Validation failed: Password must be at least 8 characters long, contain uppercase and lowercase letters and a number.');
+});
+
+test('should error when signing up with a password missing lowercase', async ({ signupPage } ) => {
+    await signupPage.goto();
+    const email = `cloudAppTestEmail${(new Date()).getMilliseconds()}@weepm.com`;
+    const missLowerPwd = 'LU345678'
+    await signupPage.signUp(email, missLowerPwd);
+    await expect(signupPage.errorMsg).toHaveText('Validation failed: Password must be at least 8 characters long, contain uppercase and lowercase letters and a number.');
+});
+
+test('should error when signing up with a password missing uppercase', async ({ signupPage } ) => {
+    await signupPage.goto();
+    const email = `cloudAppTestEmail${(new Date()).getMilliseconds()}@weepm.com`;
+    const missUpperPwd = 'lu345678'
+    await signupPage.signUp(email, missUpperPwd);
+    await expect(signupPage.errorMsg).toHaveText('Validation failed: Password must be at least 8 characters long, contain uppercase and lowercase letters and a number.');
+});
+
+test('should error when signing up with a password missing a number', async ({ signupPage } ) => {
+    await signupPage.goto();
+    const email = `cloudAppTestEmail${(new Date()).getMilliseconds()}@weepm.com`;
+    const missNumPwd = 'lUlUlUlU'
+    await signupPage.signUp(email, missNumPwd);
+    await expect(signupPage.errorMsg).toHaveText('Validation failed: Password must be at least 8 characters long, contain uppercase and lowercase letters and a number.');
 });
