@@ -1,6 +1,8 @@
 import { test } from './fixtures/BaseTest';
 import { expect } from '@playwright/test';
 
+test.describe.configure({ mode: 'parallel' });
+
 test('should load CloudApp homepage', async ({ homePage }) => {
     await homePage.goto();
     await homePage.verifyPageTitle();
