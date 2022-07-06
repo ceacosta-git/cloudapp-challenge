@@ -72,3 +72,15 @@ test('should error when signing up with a password missing a number', async ({ s
     await signupPage.signUp(email, missNumPwd);
     await expect(signupPage.errorMsg).toHaveText('Validation failed: Password must be at least 8 characters long, contain uppercase and lowercase letters and a number.');
 });
+
+test('should error when signing up with empty email', async ({ signupPage } ) => {
+    await signupPage.goto();
+    await signupPage.signUp('', 'cloudAppTestPwd01');
+    await expect(signupPage.emailInput, 'Email required validation is expected to be handled by default\'s <input required=required/> element').toHaveAttribute('required', 'required');
+});
+
+test('should error when signing up in with empty password', async ({ signupPage } ) => {
+    await signupPage.goto();
+    await signupPage.signUp('xatiw91450@weepm.com', '');
+    await expect(signupPage.pwdInput, 'Password required validation is expected to be handled by default\'s <input required=required/> element').toHaveAttribute('required', 'required');
+});
