@@ -30,3 +30,15 @@ test('should update avatar when uploading a valid png image', async ({ page }) =
     await expect(page.locator('a[role="button"] >> #avatar')).toHaveAttribute('style', /.*\/avatar.png.*/);
     await expect(page.locator('#avatar:below(:text("Avatar"))')).toHaveAttribute('style', /.*\/avatar.png.*/);
 });
+
+test('should error when uploading an image greater than 500x500px', async ({ page }) => {
+    await page.setInputFiles('#user_avatar', './tests/avatars/invalid-large-501x501.jpeg');
+    await page.locator('data-testid=onboarding-submit-about-you-form').click();
+    await expect(page.locator('text=Avatar Max size is 500x500px')).toBeVisible();
+});
+
+test('should error when uploading a file that is not an image', async ({ page }) => {
+    await page.setInputFiles('#user_avatar', './tests/avatars/test.txt');
+    await page.locator('data-testid=onboarding-submit-about-you-form').click();
+    await expect(page.locator('text=Avatar must be an image')).toBeVisible();
+});
