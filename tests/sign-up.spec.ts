@@ -25,6 +25,7 @@ test('should create a new CloudApp account', async ({ homePage, loginPage, signu
     await signupPage.signUp(email, pwd);
     
     await onboardingPage.waitForUrlChange();
+    await onboardingPage.verifySuccessMsg();
     await onboardingPage.verifyDownloadBtns();
 });
 
