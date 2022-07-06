@@ -7,6 +7,8 @@ export class LoginPage {
     readonly signInBtn: Locator;
     readonly signUpLnk: Locator;
     readonly errorMsg: Locator;
+    readonly successMsg: Locator;
+
     
 
     constructor(page: Page) {
@@ -16,7 +18,7 @@ export class LoginPage {
         this.pwdInput = page.locator('data-testid=regular-login-password');
         this.signInBtn = page.locator('data-testid=regular-login-submit');
         this.errorMsg = page.locator(':not(.flash).alert-danger');
-
+        this.successMsg = page.locator(':not(.flash).alert-success');
     }
 
     async goto() {
@@ -31,5 +33,11 @@ export class LoginPage {
         await this.emailInput.fill(email);
         await this.pwdInput.fill(password);
         await this.signInBtn.click();
+    }
+
+    async verifySignedOut(): Promise<void> {
+        await expect(this.successMsg).toBeVisible();
+        await expect(this.successMsg).toHaveText('Successfully Logged Out');
+        await expect(this.successMsg).not.toBeVisible();
     }
 }
