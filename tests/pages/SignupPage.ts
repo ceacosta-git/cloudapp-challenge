@@ -5,6 +5,7 @@ export class SignupPage {
     readonly emailInput: Locator;
     readonly pwdInput: Locator;
     readonly signupBtn: Locator;
+    readonly errorMsg: Locator;
 
 
     constructor(page: Page) {
@@ -12,6 +13,7 @@ export class SignupPage {
         this.emailInput = page.locator('#email');
         this.pwdInput = page.locator('#password');
         this.signupBtn = page.locator('data-testid=regular-signup-submit');
+        this.errorMsg = page.locator('.alert-danger');
     }
 
     async goto() {
