@@ -6,6 +6,8 @@ export class LoginPage {
     readonly pwdInput: Locator;
     readonly signInBtn: Locator;
     readonly signUpLnk: Locator;
+    readonly errorMsg: Locator;
+    
 
     constructor(page: Page) {
         this.page = page;
@@ -13,6 +15,8 @@ export class LoginPage {
         this.emailInput = page.locator('data-testid=regular-login-email');
         this.pwdInput = page.locator('data-testid=regular-login-password');
         this.signInBtn = page.locator('data-testid=regular-login-submit');
+        this.errorMsg = page.locator(':not(.flash).alert-danger');
+
     }
 
     async goto() {
