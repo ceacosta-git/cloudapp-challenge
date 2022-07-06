@@ -1,6 +1,8 @@
 import { test } from './fixtures/BaseTest';
 import { expect } from '@playwright/test';
 
+test.describe.configure({ mode: 'parallel' });
+
 test('should login with existing CloudApp account', async ({ page, homePage, loginPage}) => {
     await homePage.goto();
     await homePage.loginLnk.click();
