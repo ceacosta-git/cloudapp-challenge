@@ -4,6 +4,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { OnboardingPage } from '../pages/OnboardingPage';
 import { SignupPage } from '../pages/SignupPage';
 import { ProfilePage } from '../pages/ProfilePage';
+import { Navigation } from '../pages/Navigation';
 
 type CloudAppFixtures = {
     homePage: HomePage;
@@ -11,6 +12,7 @@ type CloudAppFixtures = {
     onboardingPage: OnboardingPage;
     signupPage: SignupPage;
     profilePage: ProfilePage;
+    navigation: Navigation;
 };
 
 export const test = base.extend<CloudAppFixtures>({
@@ -32,5 +34,9 @@ export const test = base.extend<CloudAppFixtures>({
 
     profilePage: async ({ page }, use) => {
         await use(new ProfilePage(page));
+    },
+
+    navigation: async ({ page }, use) => {
+        await use(new Navigation(page));
     }
 });
